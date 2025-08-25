@@ -53,11 +53,12 @@ void configureAsteroid(OrbitalBody *body, float centerMass)
     float vy = getRandomFloat(-1E2F, 1E2F);
 
     // Fill in with your own fields:
-    // body->mass = 1E12F;  // Typical asteroid weight: 1 billion tons
-    // body->radius = 2E3F; // Typical asteroid radius: 2km
-    // body->color = GRAY;
-    // body->position = {r * cosf(phi), 0, r * sinf(phi)};
-    // body->velocity = {-v * sinf(phi), vy, v * cosf(phi)};
+    body->mass = 1E12F;  // Typical asteroid weight: 1 billion tons
+    body->radius = 2E3F; // Typical asteroid radius: 2km
+    body->color = GRAY;
+    body->position = {r * cosf(phi), 0, r * sinf(phi)};
+    body->velocity = {-v * sinf(phi), vy, v * cosf(phi)};
+	body->isMassive = false;
 }
 
 /**
@@ -66,13 +67,31 @@ void configureAsteroid(OrbitalBody *body, float centerMass)
  * @param float The time step
  * @return The orbital simulation
  */
-OrbitalSim *constructOrbitalSim(float timeStep)
+OrbitalSim* constructOrbitalSim(float timeStep, int numAsteroids)
 {
-    // Your code goes here...
+	const int bodies = SOLARSYSTEM_BODYNUM + numAsteroids;
+    OrbitalSim* sim = new OrbitalSim;
+    sim->num_bodies = bodies;
 
+    sim->orbital_arr = new OrbitalBody[bodies];
+	sim->time_step = timeStep;
+	sim->time = 0.0F;
 
+    for(int i = 0; i < SOLARSYSTEM_BODYNUM; i++) {
+        sim->orbital_arr[i].name = solarSystem[i].name;
+        sim->orbital_arr[i].mass = solarSystem[i].mass;
+        sim->orbital_arr[i].radius = solarSystem[i].radius;
+        sim->orbital_arr[i].color = solarSystem[i].color;
+        sim->orbital_arr[i].position = solarSystem[i].position;
+        sim->orbital_arr[i].velocity = solarSystem[i].velocity;
+		sim->orbital_arr[i].isMassive = true;
+	}
 
-    return NULL; // This should return your orbital sim
+    for (int i = SOLARSYSTEM_BODYNUM; i < bodies; i++) {
+        configureAsteroid(&sim->orbital_arr[i], solarSystem[0].mass);
+    }
+    
+    return sim; // This should return your orbital sim
 }
 
 /**
@@ -80,9 +99,8 @@ OrbitalSim *constructOrbitalSim(float timeStep)
  */
 void destroyOrbitalSim(OrbitalSim *sim)
 {
-    // Your code goes here...
-
-
+    delete[] sim->orbital_arr;
+    delete sim;
 }
 
 /**
@@ -92,7 +110,18 @@ void destroyOrbitalSim(OrbitalSim *sim)
  */
 void updateOrbitalSim(OrbitalSim *sim)
 {
-    // Your code goes here...
+    for (int i = 0; i < sim->num_bodies; i++){
 
+        for (int j = 0; j < sim->num_bodies; j++){
+            if (sim->orbital_arr[j].isMassive) {
+
+                if (i != j) {
+                    Vector3 vector_unitario = Vector3subtract(sim->
+                }
+            }
+
+        }
+
+    }
 
 }

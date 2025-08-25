@@ -13,9 +13,13 @@
  */
 struct OrbitalBody
 {
-    // Fill in your code here...
-
-
+	const char* name; // Name
+	float mass;		  // [kg]
+	float radius;	  // [m]
+	Color color;	  // Raylib color
+	Vector3 position; // [m]
+	Vector3 velocity; // [m/s]
+	bool isMassive; // Whether the body is considered massive (for gravity calculations)
 };
 
 /**
@@ -23,8 +27,10 @@ struct OrbitalBody
  */
 struct OrbitalSim
 {
-    // Fill in your code here...
-
+	float time_step;
+	float time;
+	int num_bodies;
+	OrbitalBody* orbital_arr;
 
 };
 
