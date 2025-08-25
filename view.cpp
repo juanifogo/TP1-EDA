@@ -6,7 +6,8 @@
  */
 
 #include <time.h>
-
+#include "raylib.h"
+#include "raymath.h"
 #include "View.h"
 
 #define WINDOW_WIDTH 1280
@@ -95,15 +96,26 @@ void renderView(View *view, OrbitalSim *sim)
     BeginMode3D(view->camera);
 
     // Fill in your 3D drawing code here:
-
+    for(int i = 0; i < sim->num_bodies; i++) {
+        OrbitalBody body = sim->orbital_arr[i];
+        Vector3 scale_position = Vector3Scale(body.position, 1E-11F);
+        DrawSphere(scale_position, logf(body.radius) * 0.005F, body.color); // Scale down radius for visibility
+		DrawPoint3D(scale_position, body.color);
+	}
 
 
     DrawGrid(10, 10.0f);
     EndMode3D();
 
     // Fill in your 2D drawing code here:
-
-
+	DrawFPS(10, 10);
+	DrawText(TextFormat("Date: %s",getISODate(sim->time)), 10, 30, 20, RAYWHITE);
+	DrawText(TextFormat("Bodies: %d", sim->num_bodies), 10, 50, 20, RAYWHITE);
+    DrawText(TextFormat("Venus pos: [%.2f, %.2f, %.2f]",
+                       sim->orbital_arr[2].position.x ,
+                       sim->orbital_arr[2].position.y ,
+                       sim->orbital_arr[2].position.z ),
+		10, 70, 20, RAYWHITE);
 
     EndDrawing();
 }

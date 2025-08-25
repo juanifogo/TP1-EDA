@@ -8,6 +8,9 @@
 #ifndef ORBITALSIM_H
 #define ORBITALSIM_H
 
+#include "raylib.h"
+#include "raymath.h"
+
 /**
  * @brief Orbital body definition
  */
@@ -34,7 +37,7 @@ struct OrbitalSim
 
 };
 
-OrbitalSim *constructOrbitalSim(float timeStep);
+OrbitalSim *constructOrbitalSim(float timeStep, int numAsteroids);
 void destroyOrbitalSim(OrbitalSim *sim);
 
 void updateOrbitalSim(OrbitalSim *sim);

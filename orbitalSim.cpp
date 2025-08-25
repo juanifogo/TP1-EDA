@@ -111,17 +111,27 @@ void destroyOrbitalSim(OrbitalSim *sim)
 void updateOrbitalSim(OrbitalSim *sim)
 {
     for (int i = 0; i < sim->num_bodies; i++){
-
+		Vector3 fuerza_total = { 0,0,0 };
         for (int j = 0; j < sim->num_bodies; j++){
-            if (sim->orbital_arr[j].isMassive) {
+            if (sim->orbital_arr[j].isMassive){
 
-                if (i != j) {
-                    Vector3 vector_unitario = Vector3subtract(sim->
-                }
+                if (i != j){
+					Vector3 vector_unitario = Vector3Subtract(sim->orbital_arr[i].position, sim->orbital_arr[j].position);
+					float distancia = Vector3Length(vector_unitario); // calcula la distancia entre los dos cuerpos antes de normalizar
+					vector_unitario = Vector3Normalize(vector_unitario);
+					float fuerza_magnitud = ( - 1 * GRAVITATIONAL_CONSTANT * sim->orbital_arr[i].mass * sim->orbital_arr[j].mass ) / (distancia * distancia);
+					fuerza_total = Vector3Add(fuerza_total, Vector3Scale(vector_unitario, fuerza_magnitud));
+                }   
             }
 
         }
+		Vector3 aceleracion = Vector3Scale(fuerza_total, 1 / sim->orbital_arr[i].mass);
+		sim->orbital_arr[i].velocity = Vector3Add(sim->orbital_arr[i].velocity, Vector3Scale(aceleracion, sim->time_step));
 
     }
 
+    for (int i = 0; i < sim->num_bodies; i++){
+		sim->orbital_arr[i].position = Vector3Add(sim->orbital_arr[i].position, Vector3Scale(sim->orbital_arr[i].velocity, sim->time_step));
+    }
+	sim->time += sim->time_step;
 }
