@@ -30,8 +30,8 @@ struct OrbitalBody
  */
 struct OrbitalSim
 {
-	float time_step;
-	float time;
+	double time_step;
+	double time;
 	int num_bodies;
 	OrbitalBody* orbital_arr;
 
