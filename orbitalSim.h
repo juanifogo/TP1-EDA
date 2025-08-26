@@ -17,8 +17,8 @@
 struct OrbitalBody
 {
 	const char* name; // Name
-	float mass;		  // [kg]
-	float radius;	  // [m]
+	double mass;		  // [kg]
+	double radius;	  // [m]
 	Color color;	  // Raylib color
 	Vector3 position; // [m]
 	Vector3 velocity; // [m/s]
@@ -30,8 +30,8 @@ struct OrbitalBody
  */
 struct OrbitalSim
 {
-	float time_step;
-	float time;
+	double time_step;
+	double time;
 	int num_bodies;
 	OrbitalBody* orbital_arr;
 

@@ -5,18 +5,18 @@
  * @copyright Copyright (c) 2022-2023
  */
 
-#include "OrbitalSim.h"
-#include "View.h"
+#include "orbitalSim.h"
+#include "view.h"
 
 #define SECONDS_PER_DAY 86400
 
 int main()
 {
     int fps = 60;                                 // Frames per second
-    float timeMultiplier = 100 * SECONDS_PER_DAY; // Simulation speed: 100 days per simulation second
-    float timeStep = timeMultiplier / fps;
+    double timeMultiplier = 100 * SECONDS_PER_DAY; // Simulation speed: 100 days per simulation second
+    double timeStep = timeMultiplier / fps;
 
-    OrbitalSim *sim = constructOrbitalSim(timeStep, 10);
+    OrbitalSim *sim = constructOrbitalSim(timeStep, 100);
     View *view = constructView(fps);
 
     while (isViewRendering(view))

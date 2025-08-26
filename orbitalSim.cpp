@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "OrbitalSim.h"
+#include "orbitalSim.h"
 #include "ephemerides.h"
 
 #define GRAVITATIONAL_CONSTANT 6.6743E-11F
@@ -111,22 +111,20 @@ void destroyOrbitalSim(OrbitalSim *sim)
 void updateOrbitalSim(OrbitalSim *sim)
 {
     for (int i = 0; i < sim->num_bodies; i++){
-		Vector3 fuerza_total = { 0,0,0 };
+		Vector3 aceleracion_total = { 0,0,0 };
         for (int j = 0; j < sim->num_bodies; j++){
             if (sim->orbital_arr[j].isMassive){
 
                 if (i != j){
-					Vector3 vector_unitario = Vector3Subtract(sim->orbital_arr[i].position, sim->orbital_arr[j].position);
-					float distancia = Vector3Length(vector_unitario); // calcula la distancia entre los dos cuerpos antes de normalizar
-					vector_unitario = Vector3Normalize(vector_unitario);
-					float fuerza_magnitud = ( - 1 * GRAVITATIONAL_CONSTANT * sim->orbital_arr[i].mass * sim->orbital_arr[j].mass ) / (distancia * distancia);
-					fuerza_total = Vector3Add(fuerza_total, Vector3Scale(vector_unitario, fuerza_magnitud));
+					Vector3 diff = Vector3Subtract(sim->orbital_arr[i].position, sim->orbital_arr[j].position);
+					double distancia = Vector3Length(diff); // calcula la distancia entre los dos cuerpos antes de normalizar
+					double fuerza_magnitud = ( - 1 * GRAVITATIONAL_CONSTANT * sim->orbital_arr[j].mass ) / (distancia * distancia * distancia);
+					aceleracion_total = Vector3Add(aceleracion_total, Vector3Scale(diff, fuerza_magnitud));
                 }   
             }
 
         }
-		Vector3 aceleracion = Vector3Scale(fuerza_total, 1 / sim->orbital_arr[i].mass);
-		sim->orbital_arr[i].velocity = Vector3Add(sim->orbital_arr[i].velocity, Vector3Scale(aceleracion, sim->time_step));
+		sim->orbital_arr[i].velocity = Vector3Add(sim->orbital_arr[i].velocity, Vector3Scale(aceleracion_total, sim->time_step));
 
     }
 

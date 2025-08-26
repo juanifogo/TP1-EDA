@@ -8,7 +8,7 @@
 #include <time.h>
 #include "raylib.h"
 #include "raymath.h"
-#include "View.h"
+#include "view.h"
 
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
@@ -99,7 +99,7 @@ void renderView(View *view, OrbitalSim *sim)
     for(int i = 0; i < sim->num_bodies; i++) {
         OrbitalBody body = sim->orbital_arr[i];
         Vector3 scale_position = Vector3Scale(body.position, 1E-11F);
-        DrawSphere(scale_position, logf(body.radius) * 0.005F, body.color); // Scale down radius for visibility
+        DrawSphere(scale_position, logf(body.radius) * 0.01F, body.color); // Scale down radius for visibility
 		DrawPoint3D(scale_position, body.color);
 	}
 
