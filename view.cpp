@@ -9,9 +9,13 @@
 #include "raylib.h"
 #include "raymath.h"
 #include "View.h"
+#include <stdio.h>
 
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
+
+Model earth_model;
+Texture2D earth_texture;
 
 /**
  * @brief Converts a timestamp (number of seconds since 1/1/2022)
@@ -55,6 +59,15 @@ View *constructView(int fps)
     view->camera.fovy = 45.0f;
     view->camera.projection = CAMERA_PERSPECTIVE;
 
+    earth_model = LoadModel("C:/Users/Lucca/source/repos/TP1-EDA/out/build/3dmodel/earth_model.obj");
+	earth_texture = LoadTexture("C:/Users/Lucca/source/repos/TP1-EDA/out/build/3dmodel/Textures/Textures/Diffuse_2K.png");
+    if (earth_texture.id == 0) {
+        printf("Error: no se cargó la textura\n");
+    }
+
+    earth_model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = earth_texture;
+
+
     return view;
 }
 
@@ -66,7 +79,8 @@ View *constructView(int fps)
 void destroyView(View *view)
 {
     CloseWindow();
-
+	UnloadModel(earth_model);
+    UnloadTexture(earth_texture);
     delete view;
 }
 
@@ -95,27 +109,44 @@ void renderView(View *view, OrbitalSim *sim)
     ClearBackground(BLACK);
     BeginMode3D(view->camera);
 
+	static int rotation = 0;
     // Fill in your 3D drawing code here:
     for(int i = 0; i < sim->num_bodies; i++) {
+
         OrbitalBody body = sim->orbital_arr[i];
         Vector3 scale_position = Vector3Scale(body.position, 1E-11F);
-        DrawSphere(scale_position, logf(body.radius) * 0.005F, body.color); // Scale down radius for visibility
-		DrawPoint3D(scale_position, body.color);
+        //Vector3 scale_position = { 0,0,0 };
+		//DrawModel(earth_model, scale_position, 0.05f, body.color);
+		DrawModelEx(earth_model, scale_position, { 0.0f, 1.0f, 0.0f }, rotation, { 0.05f, 0.05f, 0.05f }, body.color);
+        //DrawSphere(scale_position, logf(body.radius) * 0.008F, body.color); // Scale down radius for visibility
+		DrawPoint3D(scale_position, body.color);    
 	}
 
 
     DrawGrid(10, 10.0f);
     EndMode3D();
 
+    Vector3 scale_position = { 0,0,0 };
+
     // Fill in your 2D drawing code here:
 	DrawFPS(10, 10);
 	DrawText(TextFormat("Date: %s",getISODate(sim->time)), 10, 30, 20, RAYWHITE);
 	DrawText(TextFormat("Bodies: %d", sim->num_bodies), 10, 50, 20, RAYWHITE);
     DrawText(TextFormat("Venus pos: [%.2f, %.2f, %.2f]",
-                       sim->orbital_arr[2].position.x ,
-                       sim->orbital_arr[2].position.y ,
-                       sim->orbital_arr[2].position.z ),
+                       sim->orbital_arr[2].velocity.x ,
+                       sim->orbital_arr[2].velocity.y ,
+                       sim->orbital_arr[2].velocity.z ),
 		10, 70, 20, RAYWHITE);
 
+    DrawText(TextFormat("Venus pos: [%.2f, %.2f, %.2f]",
+        sim->orbital_arr[2].velocity.x,
+        sim->orbital_arr[2].velocity.y,
+        sim->orbital_arr[2].velocity.z),
+        10, 70, 20, RAYWHITE);
+
+    DrawText(TextFormat("%uc", sim->orbital_arr[2].color.a),10, 100, 20, RAYWHITE);
+
     EndDrawing();
+
+    rotation++;
 }

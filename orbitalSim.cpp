@@ -79,7 +79,7 @@ OrbitalSim* constructOrbitalSim(float timeStep, int numAsteroids)
 
     for(int i = 0; i < SOLARSYSTEM_BODYNUM; i++) {
         sim->orbital_arr[i].name = solarSystem[i].name;
-        sim->orbital_arr[i].mass = solarSystem[i].mass;
+        sim->orbital_arr[i].mass = solarSystem[i].mass; //1000000000000000000000000.0  10000000000000000000000000000000.0;
         sim->orbital_arr[i].radius = solarSystem[i].radius;
         sim->orbital_arr[i].color = solarSystem[i].color;
         sim->orbital_arr[i].position = solarSystem[i].position;
