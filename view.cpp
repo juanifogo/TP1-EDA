@@ -59,8 +59,8 @@ View *constructView(int fps)
     view->camera.fovy = 45.0f;
     view->camera.projection = CAMERA_PERSPECTIVE;
 
-    earth_model = LoadModel("C:/Users/Lucca/source/repos/TP1-EDA/out/build/3dmodel/earth_model.obj");
-	earth_texture = LoadTexture("C:/Users/Lucca/source/repos/TP1-EDA/out/build/3dmodel/Textures/Textures/Diffuse_2K.png");
+    earth_model = LoadModel("../../../assets/earth_model.obj");
+	earth_texture = LoadTexture("../../../assets/Textures/Textures/Diffuse_2K.png");
     if (earth_texture.id == 0) {
         printf("Error: no se cargó la textura\n");
     }

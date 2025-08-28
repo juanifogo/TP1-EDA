@@ -18,7 +18,7 @@ struct OrbitalBody
 {
 	const char* name; // Name
 	double mass;		  // [kg]
-	float radius;	  // [m]
+	double radius;	  // [m]
 	Color color;	  // Raylib color
 	Vector3 position; // [m]
 	Vector3 velocity; // [m/s]
