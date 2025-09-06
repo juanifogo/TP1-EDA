@@ -5,6 +5,14 @@
  * @copyright Copyright (c) 2022-2023
  */
 
+/**
+ * @brief Implements an orbital simulation view
+ * @author Rocco Diaz Parisi and Juan Ignacio Fogolin Lagares
+ * Algoritmo y Estructuras de Datos - 25.03
+ * TP1 - Warm Up
+ *
+ */
+
 // Enables M_PI #define in Windows
 #define _USE_MATH_DEFINES
 
